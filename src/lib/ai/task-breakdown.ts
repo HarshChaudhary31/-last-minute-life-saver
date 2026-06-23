@@ -2,9 +2,11 @@ import OpenAI from "openai";
 import type { ParsedTask, ParsedSubTask, DailyPlan, RescuePlan, ProductivityInsight } from "@/types";
 import type { Priority } from "@prisma/client";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  : null;
 
 function parseJsonResponse<T>(content: string): T {
   const cleaned = content.replace(/```json\n?|\n?```/g, "").trim();
@@ -17,7 +19,7 @@ export async function parseNaturalLanguageTask(input: string): Promise<ParsedTas
   }
 
   try {
-    const response = await openai.chat.completions.create({
+    const response = await openai!.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         {
@@ -107,7 +109,7 @@ export async function breakdownTask(title: string, description?: string): Promis
   }
 
   try {
-    const response = await openai.chat.completions.create({
+    const response = await openai!.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         {
@@ -217,7 +219,7 @@ export async function generateRescuePlan(
 
   if (process.env.OPENAI_API_KEY) {
     try {
-      const response = await openai.chat.completions.create({
+      const response = await openai!.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [
           {
@@ -249,7 +251,7 @@ export async function generateProductivityInsights(
 
   if (process.env.OPENAI_API_KEY) {
     try {
-      const response = await openai.chat.completions.create({
+      const response = await openai!.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [
           {

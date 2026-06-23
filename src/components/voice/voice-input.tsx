@@ -26,7 +26,7 @@ export function VoiceInput({ onTranscript }: VoiceInputProps) {
         rec.interimResults = false;
         rec.lang = "en-US";
 
-        rec.onresult = (event: SpeechRecognitionEvent) => {
+        rec.onresult = (event: any) => {
           const transcript = event.results[0][0].transcript;
           onTranscript(transcript);
           toast.success("Voice captured!");
