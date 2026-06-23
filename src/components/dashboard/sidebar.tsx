@@ -77,28 +77,33 @@ export function Sidebar() {
     </aside>
   );
 }
-
 export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 flex border-t border-white/5 glass-strong lg:hidden">
-      {navItems.map((item) => {
-        const isActive = pathname === item.href;
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "flex flex-1 flex-col items-center gap-1 py-3 text-xs",
-              isActive ? "text-primary" : "text-muted-foreground"
-            )}
-          >
-            <item.icon className="h-5 w-5" />
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <>
+      <div className="fixed top-4 right-4 z-50 lg:hidden">
+        <UserButton afterSignOutUrl="/" />
+      </div>
+
+      <nav className="fixed bottom-0 left-0 right-0 z-40 flex border-t border-white/5 glass-strong lg:hidden">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "flex flex-1 flex-col items-center gap-1 py-3 text-xs",
+                isActive ? "text-primary" : "text-muted-foreground"
+              )}
+            >
+              <item.icon className="h-5 w-5" />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+    </>
   );
 }
