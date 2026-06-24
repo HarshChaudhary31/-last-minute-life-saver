@@ -1,3 +1,6 @@
+import { auth, currentUser } from "@clerk/nextjs/server";
+import prisma from "@/lib/prisma/client";
+
 export async function getOrCreateUser() {
 const { userId: clerkId } = await auth();
 if (!clerkId) return null;
@@ -32,4 +35,15 @@ name: clerkUser.fullName ?? clerkUser.firstName ?? "User",
 
 return user;
 }
+
+export async function requireUser() {
+const user = await getOrCreateUser();
+
+if (!user) {
+throw new Error("Unauthorized");
+}
+
+return user;
+}
+
 
